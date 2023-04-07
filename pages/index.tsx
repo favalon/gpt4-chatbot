@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import React from 'react';
 import Layout from '@/components/layout';
+import BottomNavigationBar from '@/components/BootomNavigationBar';
 import styles from '@/styles/Home.module.css';
 import { Message } from '@/types/chat';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
@@ -152,6 +154,8 @@ export default function Home() {
         : []),
     ];
   }, [messages, pending, pendingSourceDocs]);
+
+  const [value, setValue] = React.useState(0);
 
   //scroll to bottom of chat
   useEffect(() => {
@@ -319,9 +323,7 @@ export default function Home() {
           </main>
         </div>
         <footer className="m-auto p-4">
-          <a href="https://twitter.com/mayowaoshin">
-            Powered by LangChainAI. Demo built by Mayo (Twitter: @mayowaoshin).
-          </a>
+          <BottomNavigationBar />
         </footer>
       </Layout>
     </>
