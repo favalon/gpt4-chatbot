@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import { SpeechConfig, AudioConfig, SpeechRecognizer, SpeechSynthesizer } from 'microsoft-cognitiveservices-speech-sdk';
 import React from 'react';
+import button_styles from 'styles/BottomNavigationBar.module.css';
 import Layout from '@/components/layout';
 import BottomNavigationBar from '@/components/BootomNavigationBar';
 import styles from '@/styles/Home.module.css';
@@ -29,7 +31,7 @@ export default function Home() {
   }>({
     messages: [
       {
-        message: 'Hi, what would you like to learn about this legal case?',
+        message: "Let's get started! I'am Kairos, your personal CEFR level assistant.",
         type: 'apiMessage',
       },
     ],
@@ -155,7 +157,7 @@ export default function Home() {
     ];
   }, [messages, pending, pendingSourceDocs]);
 
-  const [value, setValue] = React.useState(0);
+  //const [value, setValue] = React.useState(0);
 
   //scroll to bottom of chat
   useEffect(() => {
@@ -170,6 +172,77 @@ export default function Home() {
   const handleSelect = (item: string) => {
     setSelectedItem(item);
   };
+
+  // Your existing states and functions...
+  const [isRecording, setIsRecording] = useState(false);
+
+  const speechConfig = SpeechConfig.fromSubscription(
+    'baa4627d38424fc88dd211f05094ab37', // Replace with your Speech service key
+    'eastus' // Replace with your Speech service region
+  );
+
+  const startSpeechRecognition = async () => {
+    setIsRecording(true);
+
+    const audioConfig = AudioConfig.fromDefaultMicrophoneInput();
+    const recognizer = new SpeechRecognizer(speechConfig, audioConfig);
+
+    recognizer.recognizeOnceAsync(
+      (result) => {
+        setQuery(result.text);
+        setIsRecording(false);
+        recognizer.close();
+      },
+      (error) => {
+        console.error('Error during speech recognition:', error);
+        setIsRecording(false);
+        recognizer.close();
+      }
+    );
+  };
+
+
+// Function to synthesize text using Azure Text-to-Speech
+const synthesizeTextToSpeech = async (text: string) => {
+  return new Promise((resolve, reject) => {
+    const audioConfig = AudioConfig.fromDefaultSpeakerOutput();
+    const synthesizer = new SpeechSynthesizer(speechConfig, audioConfig);
+    synthesizer.speakTextAsync(
+      text,
+      (result) => {
+        if (result) {
+          synthesizer.close();
+          resolve(result);
+        } else {
+          synthesizer.close();
+          reject(new Error('Synthesis failed.'));
+        }
+      },
+      (error) => {
+        synthesizer.close();
+        reject(error);
+      }
+    );
+  });
+};
+
+// Effect to listen for new apiMessage and trigger the text-to-speech
+useEffect(() => {
+  const latestMessage = chatMessages[messages.length - 1];
+
+  if (latestMessage && latestMessage.type === 'apiMessage') {
+    synthesizeTextToSpeech(latestMessage.message)
+      .then((result) => {
+        console.log('Text-to-speech synthesis succeeded:', result);
+      })
+      .catch((error) => {
+        console.error('Text-to-speech synthesis failed:', error);
+      });
+  }
+
+  //log chat messages to console with each update
+  
+}, [messages]);
 
 
   return (
@@ -281,7 +354,7 @@ export default function Home() {
             </div>
             <div className={styles.center}>
               <div className={styles.cloudform}>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className={styles.submit_area}>
                   <textarea
                     disabled={loading}
                     onKeyDown={handleEnter}
@@ -303,7 +376,7 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={styles.generatebutton}
+                    className={styles.button}
                   >
                     {loading ? (
                       <div className={styles.loadingwheel}>
@@ -320,6 +393,24 @@ export default function Home() {
                       </svg>
                     )}
                   </button>
+                  <button
+                      type="button"
+                      disabled={loading || isRecording}
+                      className={styles.button}
+                      onClick={startSpeechRecognition}
+                    >
+                      {isRecording ? (
+                            'Recording...'
+                          ) : (
+                            <div>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
+                                <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0v5zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3z"/>
+                              </svg> 
+                              <span></span>
+                            </div>
+                            )}
+                    </button>
                 </form>
               </div>
             </div>

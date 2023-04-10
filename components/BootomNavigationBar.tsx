@@ -19,8 +19,8 @@ export const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({ onSele
     <div className="bottom-navigation-bar">
       <button className={styles.button} onClick={() => handleSelect('test')}>English Level Test</button>
       <button className={styles.button} onClick={() => handleSelect('chat')}>Concept Interative</button>
-      <button className={styles.button} onClick={() => handleSelect('concept')}>Travel Interative</button>
-      <button className={styles.button} onClick={() => handleSelect('account')}>Dungeon Master</button>
+      <button className={styles.button} onClick={() => handleSelect('travel')}>Travel Interative</button>
+      <button className={styles.button} onClick={() => handleSelect('dungeon')}>Dungeon Master</button>
     </div>
   );
 };

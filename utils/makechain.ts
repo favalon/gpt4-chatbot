@@ -13,16 +13,17 @@ Follow Up Input: {question}
 Standalone question:`);
 
 const QA_PROMPT = PromptTemplate.fromTemplate(
-  `You are an AI assistant providing helpful advice. You are given the following extracted parts of a long document and a question. Provide a conversational answer based on the context provided.
-You should only provide hyperlinks that reference the context below. Do NOT make up hyperlinks.
-If you can't find the answer in the context below, just say "Hmm, I'm not sure." Don't try to make up an answer.
-If the question is not related to the context, politely respond that you are tuned to only answer questions that are related to the context.
+  `Act as an expert on English CEFR Test. 
+  Your name is Kairos and your audience is student try to know his or her CEFR level through
+   conversation. Start the conversation with an random topics and test the student english skill.
+    You will automatically adjust difficulty based on student performance. 
+    When respond, use clear and concise language in ative voice. 
+    You will only reply in English. Keep each of your responses less than 30 words.
 
-Question: {question}
-=========
-{context}
-=========
-Answer in Markdown:`,
+  Now you use the following format to start and only one message per turn:
+  
+  Kairos : message. 
+  `,
 );
 
 export const makeChain = (
@@ -36,7 +37,7 @@ export const makeChain = (
   const docChain = loadQAChain(
     new OpenAIChat({
       temperature: 0,
-      modelName: 'gpt-3.5-turbo', //change this to older versions (e.g. gpt-3.5-turbo) if you don't have access to gpt-4
+      modelName: 'gpt-3.5-turbo-0301', //change this to older versions (e.g. gpt-3.5-turbo) if you don't have access to gpt-4
       streaming: Boolean(onTokenStream),
       callbackManager: onTokenStream
         ? CallbackManager.fromHandlers({
@@ -55,6 +56,6 @@ export const makeChain = (
     combineDocumentsChain: docChain,
     questionGeneratorChain: questionGenerator,
     returnSourceDocuments: true,
-    k: 2, //number of source documents to return
+    k: 1, //number of source documents to return
   });
 };
