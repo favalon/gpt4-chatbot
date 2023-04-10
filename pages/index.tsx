@@ -164,6 +164,14 @@ export default function Home() {
     }
   }, [chatMessages]);
 
+
+  const [selectedItem, setSelectedItem] = useState('home');
+
+  const handleSelect = (item: string) => {
+    setSelectedItem(item);
+  };
+
+
   return (
     <>
       <Layout>
@@ -323,7 +331,7 @@ export default function Home() {
           </main>
         </div>
         <footer className="m-auto p-4">
-          <BottomNavigationBar />
+        <BottomNavigationBar onSelect={handleSelect} />
         </footer>
       </Layout>
     </>

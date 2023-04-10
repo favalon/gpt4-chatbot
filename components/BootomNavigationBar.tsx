@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-import styles from 'styles/Home.module.css';
+import styles from 'styles/BottomNavigationBar.module.css';
 
-const BottomNavigationBar: React.FC = () => {
-  const [value, setValue] = React.useState(0);
+
+interface BottomNavigationBarProps {
+  onSelect: (selectedItem: string) => void;
+}
+
+export const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({ onSelect }) => {
+  const [selectedItem, setSelectedItem] = useState('home');
+
+  const handleSelect = (item: string) => {
+    setSelectedItem(item);
+    onSelect(item);
+  };
 
   return (
-    <BottomNavigation
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
-      showLabels
-    >
-      <BottomNavigationAction label="Home" icon={<img src="asset/icons/Home.png" alt="Home" className={styles.bottom_navigation_icons}/>} />
-      <BottomNavigationAction label="Chat" icon={<img src="asset/icons/Chat.png" alt="Chat" className='bottom_navigation_icons'/>}  />
-      <BottomNavigationAction label="Concept" icon={<img src="asset/icons/Concept.png" alt="Concept" className='bottom_navigation_icons'/>}  />
-      <BottomNavigationAction label="Account" icon={<img src="asset/icons/Account.png" alt="Account" className='bottom_navigation_icons'/>}  />
-    </BottomNavigation>
+    <div className="bottom-navigation-bar">
+      <button className={styles.button} onClick={() => handleSelect('test')}>English Level Test</button>
+      <button className={styles.button} onClick={() => handleSelect('chat')}>Concept Interative</button>
+      <button className={styles.button} onClick={() => handleSelect('concept')}>Travel Interative</button>
+      <button className={styles.button} onClick={() => handleSelect('account')}>Dungeon Master</button>
+    </div>
   );
 };
 

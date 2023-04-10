@@ -210,6 +210,7 @@
   opacity: 0.25;
 }
 
+
 .footer {
   color: #5f6368;
   font-size: 0.8rem;
@@ -259,4 +260,25 @@
     width: 100%;
     text-align: center;
   }
+}
+
+.bottom_navigation_icons {
+  width: 24px;  /* Set the desired width */
+  height: 24px; /* Set the desired height */
+}
+
+.nav-item {
+  color: #555;
+}
+
+.nav-item.Mui-selected {
+  color: #f00; /* Change the color of the selected icon */
+}
+
+.nav-item .MuiBottomNavigationAction-label {
+  color: #555; /* Change the color of the label */
+}
+
+.nav-item.Mui-selected .MuiBottomNavigationAction-label {
+  color: #f00; /* Change the color of the label when the item is selected */
 }
