@@ -3,6 +3,7 @@ import { LLMChain, ChatVectorDBQAChain, loadQAChain } from 'langchain/chains';
 import { PineconeStore } from 'langchain/vectorstores';
 import { PromptTemplate } from 'langchain/prompts';
 import { CallbackManager } from 'langchain/callbacks';
+import {BaseChatMemory} from 'langchain/memory';
 
 const CONDENSE_PROMPT =
   PromptTemplate.fromTemplate(`Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
@@ -21,8 +22,9 @@ const QA_PROMPT = PromptTemplate.fromTemplate(
     You will only reply in English. Keep each of your responses less than 30 words.
 
   Now you use the following format to start and only one message per turn:
-  
   Kairos : message. 
+  Chat History:
+  {chat_history}
   `,
 );
 
@@ -34,6 +36,8 @@ export const makeChain = (
     llm: new OpenAIChat({ temperature: 0 }),
     prompt: CONDENSE_PROMPT,
   });
+
+  
   const docChain = loadQAChain(
     new OpenAIChat({
       temperature: 0,
@@ -55,7 +59,7 @@ export const makeChain = (
     vectorstore,
     combineDocumentsChain: docChain,
     questionGeneratorChain: questionGenerator,
-    returnSourceDocuments: true,
+    returnSourceDocuments: false,
     k: 1, //number of source documents to return
   });
 };

@@ -1,5 +1,11 @@
 
 /* CSS */
+.bottomnavigationbar{
+  display: flex;
+  align-items: center;
+  margin: auto;
+}
+
 .button {
   align-items: center;
   appearance: none;
@@ -21,6 +27,7 @@
   padding-left: 16px;
   padding-right: 16px;
   margin-right: 10px;
+  margin-top: 0px;
   margin-left: 10px;
   position: relative;
   text-align: left;

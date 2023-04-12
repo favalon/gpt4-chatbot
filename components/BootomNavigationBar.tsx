@@ -16,11 +16,11 @@ export const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({ onSele
   };
 
   return (
-    <div className="bottom-navigation-bar">
+    <div className={styles.bottomnavigationbar}>
       <button className={styles.button} onClick={() => handleSelect('test')}>English Level Test</button>
-      <button className={styles.button} onClick={() => handleSelect('chat')}>Concept Interative</button>
+      <button className={styles.button} onClick={() => handleSelect('concept')}>Concept Interative</button>
       <button className={styles.button} onClick={() => handleSelect('travel')}>Travel Interative</button>
-      <button className={styles.button} onClick={() => handleSelect('dungeon')}>Dungeon Master</button>
+      <button className={styles.button} onClick={() => handleSelect('dnd')}>Dungeon Master</button>
     </div>
   );
 };
