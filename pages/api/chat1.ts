@@ -8,30 +8,28 @@ const openai = new OpenAIApi(configuration);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { question, history, role_setting } = req.body;
-
-    console.log('req.body', req.body);
-    console.log('question', role_setting);
+    const { request_message} = req.body;
 
     try {
-      const messages = [
-        { role: "system", content: role_setting },
-        ...history.map(({ role, message }: { role: string; message: string }) => ({
-          role,
-          content: message,
-        })),
-        { role: "user", content: question },
-      ];
-
+      // const messages = [
+      //   { role: "system", content: role_setting },
+      //   ...history.map(({ role, message }: { role: string; message: string }) => ({
+      //     role,
+      //     content: message,
+      //   })),
+      //   { role: "user", content: question },
+      // ];
+      
       const completion = await openai.createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages: messages,
+        model: 'gpt-3.5-turbo-0301',
+        messages: request_message,
       });
 
 
       console.log(completion.data.choices[0].message)
 
-      if (completion.data.choices && completion.data.choices.length > 0) {
+      if (completion.data.choices && completion.data.choices.length > 0&&
+        completion.data.choices[0].message) {
         res.status(200).json({ answer: completion.data.choices[0].message.content.trim() });
       } else {
         res.status(400).json({ error: 'No response from the ChatGPT API', details: completion });

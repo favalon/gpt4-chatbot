@@ -1,9 +1,14 @@
-.main {
+.mainLayout {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1rem;
   width: 100%;
+  overflow: hidden;
+}
+
+.main {
+  width: 100%;
+  padding-top: 10px;
+  overflow: hidden;
+  max-height: 100vh;
 }
 
 .header {
@@ -14,23 +19,42 @@
   text-align: center;
 }
 
-.cloudform {
-  display: 'flex';
-}
 
 .chat_setting_container{
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: top;
-  padding: 1rem;
-  margin: 0rem 0rem 0rem 0rem;
-  width: 10%;
-  float: left;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
 }
+
 .chat_setting {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 90%;
+  overflow: hidden;
+}
+
+.chat_area {
+  overflow: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Adjust this value as needed */
+  position: relative;
+}
+
+
+
+.tabs{
+  margin: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .textarea {
@@ -63,12 +87,8 @@
 }
 
 .generatebutton {
-  position: absolute;
-  top: 0.87rem;
-  right: 3.5rem;
   color: rgb(165, 162, 162);
   background: none;
-  padding: 0.3rem;
   border: none;
   display: flex;
 
@@ -108,9 +128,9 @@
   position: relative;
   width: 100%;
   height: 100%;
-  max-height: calc(100% - 40px); /* Adjust this value based on the desired max height of the message list */
   overflow-y: auto;
   border-radius: 0.5rem;
+  min-height: 80vh;
 }
 
 .messagelistloading {
@@ -150,6 +170,7 @@
   background: #f9fafb;
   padding: 1.5rem;
   color: #000;
+  width: 100%;
   animation: fadein 0.5s;
 }
 
@@ -215,14 +236,17 @@
 }
 
 .cloud {
-  width: 75vw;
-  height: 65vh;
+  width: 100%;
   background: #ffffff;
   border-radius: 0.5rem;
   border: 1px solid #d9d9e3;
   display: flex;
   justify-content: center;
   align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
 }
 
 
@@ -238,9 +262,12 @@
 }
 
 .chatContainer {
-  position: relative;
+  height: 80%;
+  overflow: hidden;
+  padding: 0 0px; /* Adjust this value as needed */
   width: 100%;
 }
+
 
 .footer {
   color: #5f6368;
@@ -262,6 +289,7 @@
   .main {
     padding: 1rem;
     max-height: 90vh;
+    overflow: hidden;
   }
 
   .cloud {
@@ -317,9 +345,23 @@
 .submit_area {
   display: flex;
   flex-direction: row;
-  justify-content: left;
-  width: 90%;
-  align-items: flex-start;
+  justify-content: center;
+  
+  width: 100%;
+  align-items: center;
+  max-width: 800px;
+  
+}
+
+
+.submit_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin-left: 30%;
 }
 
 /* CSS */
@@ -371,31 +413,15 @@
   transform: translateY(2px);
 }
 
-.test_result_button {
-  position: absolute;
-  top: 70px;
-  right: 0;
+.up_option_button {
   width: 120px;
-  margin: 20px;
   font-size: 14px;
   font-weight: 800;
   border-radius: 8px;
-  
-}
-
-.create_concept_button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 120px;
-  margin: 20px;
-  font-size: 14px;
-  font-weight: 800;
-  border-radius: 8px;
-  
 }
 
 .button_speech_recog {
+  padding-right: 10px;
   align-items: center;
   background-color: #edebeb;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -410,8 +436,8 @@
   font-weight: 600;
   justify-content: center;
   line-height: 1.25;
-  margin: 0;
   min-height: 60px;
+  height: 60px;
   padding: calc(.875rem - 1px) calc(1.5rem - 1px);
   position: relative;
   text-decoration: none;
@@ -450,7 +476,10 @@
 
 .button_container {
   display: flex;
+  margin-top: auto;
+  margin-bottom: auto;
   align-items: center;
+  justify-content: center;
 }
 
 .button_tab {
@@ -502,4 +531,83 @@
   .button_tab {
     padding: 12px 50px;
   }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.loading-icon {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+/* CSS */
+.holdToTalk {
+  align-items: center;
+  appearance: none;
+  background-color: #FCFCFD;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 2px,rgba(45, 35, 66, 0.3) 0 7px 13px -2px,#D6D6E7 0 -2px 0 inset;
+  box-sizing: border-box;
+  color: #36395A;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono",monospace;
+  width: 100%;
+  height: 55px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-right: 0px;
+  margin-left: 10px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s,transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow,transform;
+  font-size: 14px;
+}
+
+.holdToTalk:focus {
+  box-shadow: #FFC300 0 0 0 1px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+.holdToTalk:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.holdToTalk:active {
+  box-shadow:#FFC300 0 3px 7px inset;
+  transform: translateY(2px);
 }
